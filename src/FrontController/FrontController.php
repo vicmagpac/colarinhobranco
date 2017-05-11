@@ -52,7 +52,7 @@ class FrontController
                 $contextObject->setParameter('date', $request->getParametroPost('date'));
                 $contextObject->setParameter('headlineContent', $request->getParametroPost('headline-content'));
                 $contextObject->setParameter('content', $request->getParametroPost('content'));
-                $contextObject->setParameter('headlineImage', $request->getParametroPost('headline-image'));
+                $contextObject->setParameter('headlineImage', $request->getParametroFile('headline-image'));
 
                 $applicationControllerNews = new ApplicationControllerNews();
                 $applicationControllerNews->salvarNews($contextObject);

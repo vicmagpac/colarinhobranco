@@ -26,21 +26,21 @@ class FileUpload
         $_UP['erros'][4] = 'Não foi feito o upload do arquivo';
 
         // Verifica se houve algum erro com o upload. Se sim, exibe a mensagem do erro
-        if ($file['arquivo']['error'] != 0) {
-            die("Não foi possível fazer o upload, erro:" . $_UP['erros'][$file['arquivo']['error']]);
+        if ($file['error'] != 0) {
+            die("Não foi possível fazer o upload, erro:" . $_UP['erros'][$file['error']]);
             exit; // Para a execução do script
         }
 
         // Caso script chegue a esse ponto, não houve erro com o upload e o PHP pode continuar
         // Faz a verificação da extensão do arquivo
-        $extensao = strtolower(end(explode('.', $file['arquivo']['name'])));
+        $extensao = strtolower(end(explode('.', $file['name'])));
         if (array_search($extensao, $_UP['extensoes']) === false) {
             echo "Por favor, envie arquivos com as seguintes extensões: jpg, png ou gif";
             exit;
         }
 
         // Faz a verificação do tamanho do arquivo
-        if ($_UP['tamanho'] < $file['arquivo']['size']) {
+        if ($_UP['tamanho'] < $file['size']) {
             echo "O arquivo enviado é muito grande, envie arquivos de até 2Mb.";
             exit;
         }
@@ -52,11 +52,11 @@ class FileUpload
             $nome_final = md5(time()).'.jpg';
         } else {
             // Mantém o nome original do arquivo
-            $nome_final = $file['arquivo']['name'];
+            $nome_final = $file['name'];
         }
 
         // Depois verifica se é possível mover o arquivo para a pasta escolhida
-        if (move_uploaded_file($file['arquivo']['tmp_name'], $_UP['pasta'] . $nome_final)) {
+        if (move_uploaded_file($file['tmp_name'], $_UP['pasta'] . $nome_final)) {
             return $nome_final;
         } else {
             // Não foi possível fazer o upload, provavelmente a pasta está incorreta

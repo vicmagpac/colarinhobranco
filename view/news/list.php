@@ -25,7 +25,7 @@
                 </h2>
 
                 <a href="<?php echo BASE_URL ?>?action=newsShow&id=<?php echo $news->getId(); ?>">
-                    <img src="#" class="news-headline-image" >
+                    <img src="<?php echo BASE_ASSETS ?>/images/upload/<?php echo $news->getHeadLineImage(); ?>" class="news-headline-image" >
                 </a>
 
                 <span class="news-headline-time">

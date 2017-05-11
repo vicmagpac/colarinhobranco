@@ -26,9 +26,9 @@ class Request
     public function getParametroFile($parametro = null)
     {
         if (!is_null($parametro)) {
-            return $_FILE[$parametro];
+            return $_FILES[$parametro];
         }
 
-        return $_FILE;
+        return $_FILES;
     }
 }

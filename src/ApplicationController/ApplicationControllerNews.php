@@ -5,6 +5,7 @@ namespace App\ApplicationController;
 use App\ContextObject\ContextObject;
 use App\Dao\NewsDao;
 use App\Model\News;
+use App\Utils\FileUpload;
 
 class ApplicationControllerNews
 {
@@ -33,6 +34,10 @@ class ApplicationControllerNews
         $news->setDate(new \DateTime($contextObject->getParameter('date')));
         $news->setHeadLineContent($contextObject->getParameter('headlineContent'));
         $news->setContent($contextObject->getParameter('content'));
+
+        $fileUpload = new FileUpload();
+        $fileName = $fileUpload->enviar($contextObject->getParameter('headlineImage'));
+        $news->setHeadLineImage($fileName);
 
         return $this->newsDao->save($news);
     }
