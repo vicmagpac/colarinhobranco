@@ -12,7 +12,7 @@
     <div id="site-content">
         <article class="news">
             <h1 class="title"><?php echo $viewData->news->getTitle(); ?></h1>
-            <img src="" alt="<?php echo $viewData->news->getTitle(); ?>">
+            <img src="<?php echo BASE_ASSETS ?>/images/upload/<?php echo $viewData->news->getHeadLineImage(); ?>" alt="<?php echo $viewData->news->getTitle(); ?>">
             <div class="news-text">
                 <pre><?php echo $viewData->news->getContent(); ?></pre>
             </div>
