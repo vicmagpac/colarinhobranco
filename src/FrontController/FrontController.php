@@ -26,6 +26,7 @@ class FrontController
             case 'newsList':
                 $applicationControllerNews = new ApplicationControllerNews();
 
+                $this->viewData->titulo = 'Lista de noticias';
                 $this->viewData->news = $applicationControllerNews->listaNews();
                 $this->viewFile = 'news/list';
                 break;
@@ -38,11 +39,13 @@ class FrontController
                 $contextObject = new ContextObject();
                 $contextObject->setParameter('newsId', $newsId);
 
+                $this->viewData->titulo = 'Detalhes';
                 $this->viewData->news = $applicationControllerNews->retornarNewsPorId($contextObject);
                 $this->viewFile = 'news/show';
                 break;
 
             case 'newsForm':
+                $this->viewData->titulo = 'Formulário';
                 $this->viewFile = 'news/form';
                 break;
 
@@ -55,7 +58,9 @@ class FrontController
                 $contextObject->setParameter('headlineImage', $request->getParametroFile('headline-image'));
 
                 $applicationControllerNews = new ApplicationControllerNews();
-                $applicationControllerNews->salvarNews($contextObject);
+                $lastId = $applicationControllerNews->salvarNews($contextObject);
+
+                $this->redirect('?action=newsShow&id='.$lastId);
 
                 break;
         }
@@ -65,9 +70,15 @@ class FrontController
 
     }
 
-    public function forward()
+    private function forward()
     {
         $viewData = $this->viewData;
         require_once 'view/'.$this->viewFile.'.php';
+    }
+
+    private function redirect($path)
+    {
+        $redirect = BASE_URL . $path;
+        header("location:$redirect");
     }
 }

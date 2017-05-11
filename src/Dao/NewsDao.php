@@ -61,7 +61,7 @@ class NewsDao
             "INSERT INTO news (content, date, headline_content, headline_image, title) 
                       VALUES (:content, :date, :headline_content, :headline_image, :title)"
         );
-        return $prepare->execute(array(
+        $prepare->execute(array(
             ':content'          => $news->getContent(),
             ':date'             => $news->getDate()->format('Y-m-d H:i:s'),
             ':headline_content' => $news->getHeadLineContent(),
@@ -69,6 +69,8 @@ class NewsDao
             ':title'            => $news->getTitle()
 
         ));
+
+        return $conn->lastInsertId('news_id_seq1');
     }
 
     private function getConn()
