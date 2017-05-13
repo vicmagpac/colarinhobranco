@@ -33,6 +33,20 @@ class FrontController
                 $this->viewFile = 'users/login';
                 break;
 
+            case 'usersLogout':
+                    session_start();
+                    $_SESSION = array();
+                    if (ini_get("session.use_cookies")) {
+                        $params = session_get_cookie_params();
+                        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params["httponly"]);
+                    }
+                    session_destroy();
+                    $this->viewData->titulo = 'Login';
+                    $this->viewFile = 'users/login';
+                    $this->redirect('?action=usersLogin');
+                
+                break;
+
             case 'newsList':
                 $applicationControllerNews = new ApplicationControllerNews();
 
@@ -82,10 +96,16 @@ class FrontController
                 $applicationControllerUsers = new ApplicationControllerUsers();
                 if ($applicationControllerUsers->hasUser($contextObject)) {
                     session_start();
+                    $_SESSION['email'] = $contextObject->getParameter('email');
+                    echo $_SESSION['email'];
                     $this->redirect('?action=newsList');
                 } else {
+                    session_destroy();
+                    //Limpa
+                    unset ($_SESSION['email']);
                     $this->redirect('?action=usersLogin');
                 }
+                
                 
                 break;
         }
@@ -97,20 +117,28 @@ class FrontController
 
     private function forward()
     {
-       /* $filter = new AuthenticationFilter();
+        $this->filter();
 
-        if (!$filter->doFilter()) 
-        {
-            $this->viewData->titulo = 'Login';
-            $this->viewFile = 'users/login';
-        }*/
         $viewData = $this->viewData;
         require_once 'view/'.$this->viewFile.'.php';
     }
 
     private function redirect($path)
     {
+        
         $redirect = BASE_URL . $path;
         header("location:$redirect");
+    }
+
+    private function filter()
+    {
+        $filter = new AuthenticationFilter();
+
+        if (!$filter->doFilter()) 
+        {
+            $this->viewData->titulo = 'Login';
+            $this->viewFile = 'users/login';
+        
+        }
     }
 }
