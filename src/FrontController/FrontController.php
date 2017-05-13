@@ -23,6 +23,12 @@ class FrontController
         $action = $request->getParametro('action');
 
         switch ($action) {
+
+            case 'usersLogin':
+                $this->viewData->titulo = 'Login';
+                $this->viewFile = 'users/login';
+                break;
+
             case 'newsList':
                 $applicationControllerNews = new ApplicationControllerNews();
 
