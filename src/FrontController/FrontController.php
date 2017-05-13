@@ -2,7 +2,9 @@
 
 namespace App\FrontController;
 
+use App\InterceptingFilter\AuthenticationFilter;
 use App\ApplicationController\ApplicationControllerNews;
+use App\ApplicationController\ApplicationControllerUsers;
 use App\ContextObject\ContextObject;
 use App\Http\Request;
 
@@ -19,7 +21,9 @@ class FrontController
 
     public function execute()
     {
+
         $request = new Request();
+
         $action = $request->getParametro('action');
 
         switch ($action) {
@@ -69,6 +73,21 @@ class FrontController
                 $this->redirect('?action=newsShow&id='.$lastId);
 
                 break;
+
+            case 'auth':
+                $contextObject = new ContextObject();
+                $contextObject->setParameter('email', $request->getParametroPost('email'));
+                $contextObject->setParameter('senha', $request->getParametroPost('senha'));
+
+                $applicationControllerUsers = new ApplicationControllerUsers();
+                if ($applicationControllerUsers->hasUser($contextObject)) {
+                    session_start();
+                    $this->redirect('?action=newsList');
+                } else {
+                    $this->redirect('?action=usersLogin');
+                }
+                
+                break;
         }
 
 
@@ -78,6 +97,13 @@ class FrontController
 
     private function forward()
     {
+       /* $filter = new AuthenticationFilter();
+
+        if (!$filter->doFilter()) 
+        {
+            $this->viewData->titulo = 'Login';
+            $this->viewFile = 'users/login';
+        }*/
         $viewData = $this->viewData;
         require_once 'view/'.$this->viewFile.'.php';
     }

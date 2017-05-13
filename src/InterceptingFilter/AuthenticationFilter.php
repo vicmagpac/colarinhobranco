@@ -1,14 +1,13 @@
 <?php
 
 
-namespace App\AuthenticationFilter;
+namespace App\InterceptingFilter;
 
 class AuthenticationFilter
 {
 	
-
 	public function doFilter()
 	{
-		return isset($_SESSION['userlogin'];
+		return isset($_SESSION['email']);
 	}
 }

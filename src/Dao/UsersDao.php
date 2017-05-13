@@ -9,20 +9,18 @@ class UsersDao
 {
 
 
-    public function get($id)
+    public function get($email, $senha)
     {
         $conn = $this->getConn();
-        $consulta = $conn->prepare("SELECT * FROM users WHERE id = :id;");
-        $consulta->bindParam(':id', $id, \PDO::PARAM_INT);
+        $consulta = $conn->prepare("SELECT * FROM users WHERE email = :email AND senha = :senha;");
+        $consulta->bindParam(':email', $email, \PDO::PARAM_STR);
+        $consulta->bindParam(':senha', $senha, \PDO::PARAM_STR);
         $consulta->execute();
 
         $row = $consulta->fetch(\PDO::FETCH_OBJ);
 
-        $user = new Users();
-        $user->setId($row->id);
-        $user->setEmail($row->email);
-
-        return $user;
+        return $row->email != null;
+    
     }
 
     private function getConn()

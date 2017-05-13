@@ -9,7 +9,7 @@
 <?php include_once BASE_INCLUDES . '/siteHeader.php' ?>
 <main>
     <div id="site-content">
-        <form method="post" action="<?php echo BASE_URL ?>?action=usersLogin">
+        <form method="post" action="<?php echo BASE_URL ?>?action=auth">
             <label for="email">e-mail:</label>
             <input id="email" name="email" type="text" placeholder="e-mail" maxlength="75" required autofocus>
 
