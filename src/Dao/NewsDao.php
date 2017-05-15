@@ -7,6 +7,12 @@ use App\Model\News;
 
 class NewsDao
 {
+    private $commentDao;
+
+    public function __construct()
+    {
+        $this->commentDao = new CommentDao();
+    }
 
     public function listNews()
     {
@@ -45,6 +51,10 @@ class NewsDao
         $news->setHeadLineContent($row->headline_content);
         $news->setHeadLineImage($row->headline_image);
         $news->setTitle($row->title);
+
+        $comments = $this->commentDao->listaComentariosPorNews($row->id);
+        $news->setComments($comments);
+
 
         return $news;
     }

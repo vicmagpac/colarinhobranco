@@ -105,8 +105,30 @@ class FrontController
                     unset ($_SESSION['email']);
                     $this->redirect('?action=usersLogin');
                 }
-                
-                
+
+                break;
+
+            case 'newsComment':
+                $contextObject = new ContextObject();
+                $contextObject->setParameter('news', $request->getParametroPost('news'));
+                $contextObject->setParameter('nome', $request->getParametroPost('nome'));
+                $contextObject->setParameter('conteudo', $request->getParametroPost('conteudo'));
+
+
+                $applicationControllerNews = new ApplicationControllerNews();
+                $ok = $applicationControllerNews->salvarComentario($contextObject);
+
+                if ($ok) {
+                    $this->showJson(array(
+                        'success' => 'true'
+                    ));
+                } else {
+                    $this->showJson(array(
+                        'success' => 'false'
+                    ));
+                }
+
+                die;
                 break;
         }
 
@@ -121,6 +143,11 @@ class FrontController
 
         $viewData = $this->viewData;
         require_once 'view/'.$this->viewFile.'.php';
+    }
+
+    private function showJson($json)
+    {
+        echo json_encode($json);
     }
 
     private function redirect($path)

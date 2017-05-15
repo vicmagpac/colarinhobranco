@@ -3,17 +3,21 @@
 namespace App\ApplicationController;
 
 use App\ContextObject\ContextObject;
+use App\Dao\CommentDao;
 use App\Dao\NewsDao;
+use App\Model\Comment;
 use App\Model\News;
 use App\Utils\FileUpload;
 
 class ApplicationControllerNews
 {
     private $newsDao;
+    private $commentDao;
 
     public function __construct()
     {
         $this->newsDao = new NewsDao();
+        $this->commentDao = new CommentDao();
     }
 
     public function listaNews()
@@ -40,5 +44,15 @@ class ApplicationControllerNews
         $news->setHeadLineImage($fileName);
 
         return $this->newsDao->save($news);
+    }
+
+    public function salvarComentario(ContextObject $contextObject)
+    {
+        $comment = new Comment();
+        $comment->setNewsId($contextObject->getParameter('news'));
+        $comment->setNome($contextObject->getParameter('nome'));
+        $comment->setConteudo($contextObject->getParameter('conteudo'));
+
+        return $this->commentDao->save($comment);
     }
 }

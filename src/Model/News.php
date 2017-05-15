@@ -11,6 +11,24 @@ class News
     private $headLineContent;
     private $headLineImage;
 
+    private $comments;
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
     /**
      * @return mixed
      */
